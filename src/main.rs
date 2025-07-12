@@ -51,6 +51,7 @@ fn main() {
     let mut buffer = Buffer::new(2000);
     let mut generator = PointGenerator::default();
 
+    let start = std::time::Instant::now();
     for _ in 0..num_points {
         let (x, y, n) = generator.next_point();
         let scale = 2000.0 / num_points as f32;
@@ -60,18 +61,57 @@ fn main() {
             buffer.set(buffer_x as u32, buffer_y as u32, 1);
         }
     }
+    let elapsed = start.elapsed();
+    println!("Point generation loop took: {:.2?}", elapsed);
 
     buffer.save("test.png");
 }
 
 fn is_prime(n: u32) -> bool {
-    let limit = (n as f64).sqrt() as u32;
-
-    for i in 2..=limit {
+    if n < 2 {
+        return false;
+    }
+    if n == 2 || n == 3 {
+        return true;
+    }
+    if n % 2 == 0 {
+        return false;
+    }
+    
+    let mut i = 3;
+    while i * i <= n {
         if n % i == 0 {
             return false;
         }
+        i += 2;
     }
 
     true
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_is_prime_edge_cases() {
+        assert_eq!(is_prime(0), false);
+        assert_eq!(is_prime(1), false);
+    }
+
+    #[test]
+    fn test_is_prime_small_primes() {
+        assert_eq!(is_prime(2), true);
+        assert_eq!(is_prime(3), true);
+        assert_eq!(is_prime(5), true);
+        assert_eq!(is_prime(17), true);
+        assert_eq!(is_prime(97), true);
+    }
+
+    #[test]
+    fn test_is_prime_composites() {
+        assert_eq!(is_prime(4), false);
+        assert_eq!(is_prime(25), false);
+        assert_eq!(is_prime(100), false);
+    }
 }
