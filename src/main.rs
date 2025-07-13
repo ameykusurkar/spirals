@@ -1,4 +1,3 @@
-use image;
 use image::{DynamicImage, GenericImage, GenericImageView, Rgba};
 
 struct Buffer {
@@ -77,7 +76,7 @@ fn is_prime(n: u32) -> bool {
     if n % 2 == 0 {
         return false;
     }
-    
+
     let mut i = 3;
     while i * i <= n {
         if n % i == 0 {
