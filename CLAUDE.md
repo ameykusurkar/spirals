@@ -62,3 +62,6 @@ This is a Rust project that generates artistic visualizations of prime numbers a
 - WebAssembly builds require `--no-default-features --features wasm` to avoid native dependencies
 - The `web/serve.py` script serves from project root to access both `web/` and `pkg/` directories
 - Coordinate scaling in WebAssembly uses `canvas_size / (2.0 * num_points)` to properly center spirals
+
+### Development Best Practices
+- Format code before committing
