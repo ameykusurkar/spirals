@@ -50,7 +50,7 @@ impl PixelBuffer {
         if x < self.width && y < self.height {
             let index = ((y * self.width + x) * 4) as usize;
             if index + 3 < self.data.len() {
-                self.data[index] = r;     // Red
+                self.data[index] = r; // Red
                 self.data[index + 1] = g; // Green
                 self.data[index + 2] = b; // Blue
                 self.data[index + 3] = a; // Alpha
@@ -96,15 +96,15 @@ pub fn generate_spiral_data(width: u32, height: u32, num_points: u32) -> Vec<u8>
     // Use the same scaling approach as the original
     let canvas_size = width.min(height) as f32;
     let scale = canvas_size / (2.0 * num_points as f32);
-    
+
     for _ in 0..num_points {
         let (x, y, n) = generator.next_point();
-        
+
         if is_prime(n) {
             // Center the spiral in the canvas and scale appropriately
             let buffer_x = ((x * scale) + canvas_size / 2.0) as u32;
             let buffer_y = ((y * scale) + canvas_size / 2.0) as u32;
-            
+
             // Use the same color as the original: [85, 239, 196, 255]
             buffer.set_pixel(buffer_x, buffer_y, 85, 239, 196, 255);
         }
@@ -117,12 +117,12 @@ pub fn generate_spiral_data(width: u32, height: u32, num_points: u32) -> Vec<u8>
 #[wasm_bindgen]
 pub fn generate_spiral(width: u32, height: u32, num_points: u32) -> js_sys::Uint8Array {
     let start = js_sys::Date::now();
-    
+
     let data = generate_spiral_data(width, height, num_points);
-    
+
     let elapsed = js_sys::Date::now() - start;
     console_log!("Spiral generation took: {:.2}ms", elapsed);
-    
+
     js_sys::Uint8Array::from(&data[..])
 }
 
@@ -161,12 +161,12 @@ mod tests {
     fn test_pixel_buffer() {
         let mut buffer = PixelBuffer::new(10, 10);
         buffer.set_pixel(5, 5, 255, 0, 0, 255);
-        
+
         let data = buffer.get_data();
         let index = (5 * 10 + 5) * 4;
-        assert_eq!(data[index], 255);     // Red
-        assert_eq!(data[index + 1], 0);   // Green
-        assert_eq!(data[index + 2], 0);   // Blue
+        assert_eq!(data[index], 255); // Red
+        assert_eq!(data[index + 1], 0); // Green
+        assert_eq!(data[index + 2], 0); // Blue
         assert_eq!(data[index + 3], 255); // Alpha
     }
 }

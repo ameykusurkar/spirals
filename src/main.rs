@@ -1,7 +1,8 @@
 #[cfg(feature = "native")]
 use image::{DynamicImage, GenericImage, GenericImageView, Rgba};
 
-use spirals::*;
+#[cfg(feature = "native")]
+use spirals::{is_prime, PointGenerator};
 
 #[cfg(feature = "native")]
 struct Buffer {
