@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Spirals - WebAssembly</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prime Spirals</h1>
+            <p>Generating artistic visualizations of prime numbers using WebAssembly</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="width">Width:</label>
+                <input type="number" id="width" value="800" min="100" max="2000" step="50">
+            </div>
+            
+            <div class="control-group">
+                <label for="height">Height:</label>
+                <input type="number" id="height" value="800" min="100" max="2000" step="50">
+            </div>
+            
+            <div class="control-group">
+                <label for="numPoints">Number of Points:</label>
+                <input type="number" id="numPoints" value="100000" min="1000" max="10000000" step="10000">
+            </div>
+            
+            <button id="generateBtn" onclick="generateSpiral()">Generate Spiral</button>
+            <button id="downloadBtn" onclick="downloadImage()" disabled>Download Image</button>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="spiralCanvas" width="800" height="800"></canvas>
+        </div>
+
+        <div class="status">
+            <div id="loadingStatus" class="hidden">Generating spiral...</div>
+            <div id="performanceInfo"></div>
+            <div id="errorMessage" class="error hidden"></div>
+        </div>
+
+        <div class="info">
+            <h3>About</h3>
+            <p>
+                This visualization generates prime number patterns in a spiral arrangement. 
+                Each prime number is plotted as a colored pixel at its corresponding spiral position.
+                The computation is performed in Rust compiled to WebAssembly for optimal performance.
+            </p>
+            <div id="versionInfo"></div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
