@@ -1,9 +1,15 @@
+#[cfg(feature = "native")]
 use image::{DynamicImage, GenericImage, GenericImageView, Rgba};
 
+#[cfg(feature = "native")]
+use spirals::{is_prime, PointGenerator};
+
+#[cfg(feature = "native")]
 struct Buffer {
     buffer: DynamicImage,
 }
 
+#[cfg(feature = "native")]
 impl Buffer {
     fn new(height_from_origin: u32) -> Self {
         Self {
@@ -27,24 +33,7 @@ impl Buffer {
     }
 }
 
-#[derive(Default)]
-struct PointGenerator {
-    radius: f32,
-    theta: f32,
-}
-
-impl PointGenerator {
-    fn next_point(&mut self) -> (f32, f32, u32) {
-        self.radius += 1.0;
-        self.theta += 1.0;
-        (
-            self.radius * self.theta.cos(),
-            self.radius * self.theta.sin(),
-            self.radius as u32,
-        )
-    }
-}
-
+#[cfg(feature = "native")]
 fn main() {
     let num_points = 10_000_000;
     let mut buffer = Buffer::new(2000);
@@ -66,51 +55,7 @@ fn main() {
     buffer.save("test.png");
 }
 
-fn is_prime(n: u32) -> bool {
-    if n < 2 {
-        return false;
-    }
-    if n == 2 || n == 3 {
-        return true;
-    }
-    if n % 2 == 0 {
-        return false;
-    }
-
-    let mut i = 3;
-    while i * i <= n {
-        if n % i == 0 {
-            return false;
-        }
-        i += 2;
-    }
-
-    true
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_is_prime_edge_cases() {
-        assert_eq!(is_prime(0), false);
-        assert_eq!(is_prime(1), false);
-    }
-
-    #[test]
-    fn test_is_prime_small_primes() {
-        assert_eq!(is_prime(2), true);
-        assert_eq!(is_prime(3), true);
-        assert_eq!(is_prime(5), true);
-        assert_eq!(is_prime(17), true);
-        assert_eq!(is_prime(97), true);
-    }
-
-    #[test]
-    fn test_is_prime_composites() {
-        assert_eq!(is_prime(4), false);
-        assert_eq!(is_prime(25), false);
-        assert_eq!(is_prime(100), false);
-    }
+#[cfg(not(feature = "native"))]
+fn main() {
+    panic!("This main function is only available with the 'native' feature enabled");
 }
