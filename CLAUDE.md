@@ -15,8 +15,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Testing and Quality
 - `cargo test --features native` - Run unit tests for prime detection
+- `cargo check --features native` - Quick compilation check for native build
+- `cargo check --no-default-features --features wasm` - Quick compilation check for WebAssembly build
 - `cargo fmt` - Format code according to Rust standards
 - `cargo fmt --all -- --check` - Check formatting (used in CI)
+
+### Development Workflow
+- After making Rust changes, rebuild WASM: `wasm-pack build --target web --no-default-features --features wasm`
+- The web interface will automatically use the updated WASM module after browser refresh
+- Use browser dev tools to see WebAssembly performance logging and any errors
 
 ## Project Architecture
 
@@ -49,3 +56,9 @@ This is a Rust project that generates artistic visualizations of prime numbers a
 ### Dependencies
 - `image` crate (0.23.12) for PNG generation (native only)
 - `wasm-bindgen`, `web-sys`, `js-sys` for WebAssembly browser integration
+
+### Important Notes
+- Default feature is `native` - always specify features explicitly in commands
+- WebAssembly builds require `--no-default-features --features wasm` to avoid native dependencies
+- The `web/serve.py` script serves from project root to access both `web/` and `pkg/` directories
+- Coordinate scaling in WebAssembly uses `canvas_size / (2.0 * num_points)` to properly center spirals
